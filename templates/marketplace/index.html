@@ -2,50 +2,355 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Home - Campus Marketplace{% endblock %}
+{% block title %}Campus Marketplace | Buy and Sell on Campus{% endblock %}
 
 {% block content %}
 
-<!-- Main Banner -->
-<section class="section main-banner" id="top" data-section="section1">
+<style>
+    /* Homepage-specific styles */
+    .campus-hero .caption {
+        max-width: 850px;
+    }
+
+    .campus-hero .caption h6 {
+        color: #f5d2d2;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+    }
+
+    .campus-hero .caption h2 {
+        font-size: clamp(36px, 5vw, 62px);
+        font-weight: 800;
+        line-height: 1.12;
+        margin-bottom: 22px;
+    }
+
+    .campus-hero .hero-description {
+        color: #f5f5f5;
+        font-size: 17px;
+        line-height: 1.8;
+        max-width: 650px;
+        margin-bottom: 26px;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+        margin-top: 25px;
+    }
+
+    .hero-actions a {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 13px 26px;
+        border-radius: 30px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .hero-primary {
+        background: #a12c35;
+        color: white;
+    }
+
+    .hero-primary:hover {
+        background: #c43d47;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .hero-secondary {
+        border: 2px solid white;
+        color: white;
+    }
+
+    .hero-secondary:hover {
+        background: white;
+        color: #222;
+    }
+
+    .marketplace-section-heading {
+        margin-bottom: 28px;
+    }
+
+    .marketplace-section-heading h2 {
+        color: white;
+        font-weight: 800;
+        font-size: clamp(25px, 3vw, 36px);
+        margin-bottom: 10px;
+    }
+
+    .marketplace-section-heading p {
+        color: #e5e5e5;
+        font-size: 15px;
+        margin-bottom: 0;
+    }
+
+    .marketplace-filter-panel {
+        background: white;
+        padding: 24px;
+        border-radius: 16px;
+        margin-bottom: 35px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .marketplace-filter-panel label {
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    .marketplace-filter-panel .form-control,
+    .marketplace-filter-panel .form-select {
+        min-height: 48px;
+        border-radius: 9px;
+    }
+
+    .marketplace-search-button {
+        min-height: 48px;
+        border: none;
+        border-radius: 9px;
+        background: #a12c35;
+        color: white;
+        font-weight: 700;
+    }
+
+    .marketplace-search-button:hover {
+        background: #81222a;
+        color: white;
+    }
+
+    .marketplace-clear-link {
+        display: inline-block;
+        margin-top: 14px;
+        color: #7b2630;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .marketplace-clear-link:hover {
+        text-decoration: underline;
+    }
+
+    .campus-product-card {
+        height: 100%;
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .campus-product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 18px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .campus-product-image {
+        position: relative;
+        height: 245px;
+        overflow: hidden;
+        background: #f0f0f0;
+    }
+
+    .campus-product-image img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .campus-product-price {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        padding: 9px 15px;
+        background: #a12c35;
+        color: white;
+        font-size: 17px;
+        font-weight: 800;
+        border-radius: 8px;
+        z-index: 1;
+    }
+
+    .campus-product-body {
+        padding: 23px;
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 245px);
+    }
+
+    .campus-category {
+        display: inline-block;
+        align-self: flex-start;
+        background: #f5e9eb;
+        color: #862a33;
+        padding: 6px 12px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 13px;
+    }
+
+    .campus-product-title {
+        color: #252525;
+        font-size: 21px;
+        font-weight: 800;
+        line-height: 1.35;
+        margin-bottom: 12px;
+    }
+
+    .campus-product-title:hover {
+        color: #a12c35;
+    }
+
+    .campus-product-description {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 15px;
+    }
+
+    .campus-product-meta {
+        color: #666;
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+
+    .campus-product-button {
+        display: block;
+        margin-top: auto;
+        padding: 12px 18px;
+        background: #a12c35;
+        color: white;
+        border-radius: 9px;
+        text-align: center;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .campus-product-button:hover {
+        background: #81222a;
+        color: white;
+    }
+
+    .campus-empty-state {
+        background: white;
+        border-radius: 16px;
+        padding: 55px 25px;
+        text-align: center;
+    }
+
+    .campus-empty-state h3 {
+        color: #252525;
+        margin-bottom: 12px;
+    }
+
+    .campus-empty-state p {
+        color: #666;
+    }
+
+    @media (max-width: 767px) {
+        .campus-hero .caption h2 {
+            font-size: 34px;
+        }
+
+        .campus-hero .hero-description {
+            font-size: 15px;
+        }
+
+        .hero-actions {
+            gap: 10px;
+        }
+
+        .hero-actions a {
+            padding: 11px 19px;
+            font-size: 13px;
+        }
+
+        .marketplace-filter-panel {
+            padding: 18px;
+        }
+
+        .campus-product-image {
+            height: 220px;
+        }
+
+        .campus-product-body {
+            height: calc(100% - 220px);
+        }
+    }
+</style>
+
+<!-- Homepage Hero -->
+<section class="section main-banner campus-hero" id="top">
+
     <video autoplay muted loop playsinline id="bg-video">
-        <source src="{% static 'assets/images/course-video.mp4' %}" type="video/mp4">
+        <source
+            src="{% static 'assets/images/course-video.mp4' %}"
+            type="video/mp4"
+        >
     </video>
 
     <div class="video-overlay header-text">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
+
                     <div class="caption">
-                        <h6>Buy, sell, and connect with fellow students on campus.</h6>
-                        <h2>Everything You Need for Campus Life</h2>
-                        <p class="text-white">
-                            Discover affordable textbooks, electronics, clothing,
-                            furniture, and more from fellow students.
+
+                        <h6>Your Campus. Your Community. Your Marketplace.</h6>
+
+                        <h2>
+                            Buy Smart. Sell Easily.
+                            <br>
+                            Save More on Campus.
+                        </h2>
+
+                        <p class="hero-description">
+                            Find affordable textbooks, electronics, furniture,
+                            clothing and everyday essentials from fellow students.
+                            Give pre-loved items a new home.
                         </p>
 
-                        <div class="main-button-red">
+                        <div class="hero-actions">
+
                             {% if user.is_authenticated %}
-                                <a href="{% url 'create_listing' %}">
+                                <a
+                                    href="{% url 'create_listing' %}"
+                                    class="hero-primary"
+                                >
                                     Sell an Item
                                 </a>
                             {% else %}
-                                <a href="{% url 'register' %}">
-                                    Join Us Now!
+                                <a
+                                    href="{% url 'register' %}"
+                                    class="hero-primary"
+                                >
+                                    Join Campus Marketplace
                                 </a>
                             {% endif %}
+
+                            <a href="#meetings" class="hero-secondary">
+                                Explore Listings
+                            </a>
+
                         </div>
 
-                        <div class="mt-3">
-                            <a href="#meetings" class="btn btn-outline-light">
-                                Browse Products
-                            </a>
-                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
+
 </section>
 
 <!-- Services -->
@@ -53,116 +358,176 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
+
                 <div class="owl-service-item owl-carousel">
 
                     <div class="item">
                         <div class="icon">
-                            <img src="{% static 'assets/images/service-icon-01.png' %}" alt="">
+                            <img
+                                src="{% static 'assets/images/service-icon-01.png' %}"
+                                alt=""
+                            >
                         </div>
+
                         <div class="down-content">
-                            <h4>Peer-to-Peer Marketplace</h4>
+                            <h4>Affordable Student Deals</h4>
                             <p>
-                                Buy and sell textbooks, furniture, electronics,
-                                clothing, and supplies with fellow students.
+                                Discover useful second-hand items at
+                                student-friendly prices.
                             </p>
                         </div>
                     </div>
 
                     <div class="item">
                         <div class="icon">
-                            <img src="{% static 'assets/images/service-icon-02.png' %}" alt="">
+                            <img
+                                src="{% static 'assets/images/service-icon-02.png' %}"
+                                alt=""
+                            >
                         </div>
+
                         <div class="down-content">
-                            <h4>Direct Messaging</h4>
+                            <h4>Connect with Sellers</h4>
                             <p>
-                                Contact sellers directly and arrange convenient
-                                on-campus meetups.
+                                Send messages directly to fellow students
+                                about products you're interested in.
                             </p>
                         </div>
                     </div>
 
                     <div class="item">
                         <div class="icon">
-                            <img src="{% static 'assets/images/service-icon-03.png' %}" alt="">
+                            <img
+                                src="{% static 'assets/images/service-icon-03.png' %}"
+                                alt=""
+                            >
                         </div>
+
                         <div class="down-content">
-                            <h4>Category Filtering &amp; Search</h4>
+                            <h4>Find Items Quickly</h4>
                             <p>
-                                Search for items by keyword and filter
-                                listings by category.
+                                Search by keyword or browse listings
+                                by category.
                             </p>
                         </div>
                     </div>
 
                     <div class="item">
                         <div class="icon">
-                            <img src="{% static 'assets/images/service-icon-02.png' %}" alt="">
+                            <img
+                                src="{% static 'assets/images/service-icon-02.png' %}"
+                                alt=""
+                            >
                         </div>
+
                         <div class="down-content">
-                            <h4>Student Dashboard</h4>
+                            <h4>Manage Your Listings</h4>
                             <p>
-                                Manage your listings, view messages, and
-                                update product availability.
+                                Create, edit and track the availability
+                                of your own products.
                             </p>
                         </div>
                     </div>
 
                 </div>
+
             </div>
         </div>
     </div>
 </section>
 
-<!-- Browse Products -->
+<!-- Marketplace Listings -->
 <section class="upcoming-meetings" id="meetings">
+
     <div class="container">
 
         <div class="row">
-            <div class="col-lg-12">
-                <div class="section-heading">
-                    <h2>Browse Campus Marketplace Listings</h2>
+            <div class="col-12">
+
+                <div class="marketplace-section-heading">
+                    <h2>Explore Campus Listings</h2>
+
+                    <p>
+                        Find what you need, connect with students,
+                        and make the most of campus life.
+                    </p>
                 </div>
+
             </div>
         </div>
 
-        <!-- Search and Category Filter -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <form method="GET" action="{% url 'home' %}" class="row g-3">
+        <!-- Search and Category Filters -->
+        <div class="marketplace-filter-panel">
 
-                    <div class="col-md-6">
-                        <input
-                            type="text"
-                            name="q"
-                            class="form-control"
-                            placeholder="Search textbooks, electronics, furniture..."
-                            value="{{ query }}"
-                        >
-                    </div>
+            <form method="GET" action="{% url 'home' %}" class="row g-3 align-items-end">
 
-                    <div class="col-md-4">
-                        <select name="category" class="form-select">
-                            <option value="">All Categories</option>
+                <div class="col-lg-6 col-md-6">
 
-                            {% for category in categories %}
-                                <option
-                                    value="{{ category.slug }}"
-                                    {% if selected_category == category.slug %}selected{% endif %}
-                                >
-                                    {{ category.name }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                    <label for="marketplace-search">
+                        Search Products
+                    </label>
 
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">
-                            Search
-                        </button>
-                    </div>
+                    <input
+                        id="marketplace-search"
+                        type="search"
+                        name="q"
+                        class="form-control"
+                        placeholder="Try textbooks, laptop, furniture..."
+                        value="{{ query|default_if_none:'' }}"
+                    >
 
-                </form>
-            </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+
+                    <label for="marketplace-category">
+                        Category
+                    </label>
+
+                    <select
+                        id="marketplace-category"
+                        name="category"
+                        class="form-select"
+                    >
+
+                        <option value="">All Categories</option>
+
+                        {% for category in categories %}
+
+                            <option
+                                value="{{ category.slug }}"
+                                {% if selected_category == category.slug %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ category.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="col-lg-2 col-md-12">
+
+                    <button
+                        type="submit"
+                        class="btn marketplace-search-button w-100"
+                    >
+                        Search
+                    </button>
+
+                </div>
+
+            </form>
+
+            {% if query or selected_category %}
+                <a href="{% url 'home' %}#meetings" class="marketplace-clear-link">
+                    Clear Filters
+                </a>
+            {% endif %}
+
         </div>
 
         <!-- Product Cards -->
@@ -171,87 +536,114 @@
             {% for listing in listings %}
 
                 <div class="col-lg-4 col-md-6">
-                    <div class="meeting-item h-100">
 
-                        <div class="thumb">
+                    <article class="campus-product-card">
 
-                            <div class="price">
-                                <span>R {{ listing.price }}</span>
-                            </div>
+                        <div class="campus-product-image">
 
-                            <a href="{% url 'listing_detail' listing.pk %}">
+                            <span class="campus-product-price">
+                                R {{ listing.price }}
+                            </span>
+
+                            <a
+                                href="{% url 'listing_detail' listing.pk %}"
+                                aria-label="View {{ listing.title }}"
+                            >
+
                                 {% if listing.image %}
+
                                     <img
                                         src="{{ listing.image.url }}"
                                         alt="{{ listing.title }}"
-                                        style="width:100%; height:260px; object-fit:cover;"
+                                        loading="lazy"
                                     >
+
                                 {% else %}
-                                    <div
-                                        class="bg-secondary text-white d-flex align-items-center justify-content-center"
-                                        style="height:260px;"
-                                    >
+
+                                    <div class="d-flex align-items-center justify-content-center h-100 text-muted">
                                         No Image Available
                                     </div>
+
                                 {% endif %}
+
                             </a>
 
                         </div>
 
-                        <div class="down-content">
+                        <div class="campus-product-body">
 
                             {% if listing.category %}
-                                <span class="badge bg-primary mb-2">
+
+                                <span class="campus-category">
                                     {{ listing.category.name }}
                                 </span>
+
                             {% else %}
-                                <span class="badge bg-secondary mb-2">
+
+                                <span class="campus-category">
                                     Uncategorised
                                 </span>
+
                             {% endif %}
 
-                            <a href="{% url 'listing_detail' listing.pk %}">
-                                <h4>{{ listing.title }}</h4>
+                            <a
+                                href="{% url 'listing_detail' listing.pk %}"
+                                class="text-decoration-none"
+                            >
+                                <h3 class="campus-product-title">
+                                    {{ listing.title }}
+                                </h3>
                             </a>
 
-                            <p class="mb-2">
-                                {{ listing.description|truncatewords:15 }}
+                            <p class="campus-product-description">
+                                {{ listing.description|truncatewords:18 }}
                             </p>
 
-                            <p class="mb-2">
+                            <p class="campus-product-meta">
                                 <strong>Seller:</strong>
                                 {{ listing.seller.username }}
                             </p>
 
-                            <p class="mb-3">
-                                <small>
-                                    Listed on {{ listing.created_at|date:"d M Y" }}
-                                </small>
+                            <p class="campus-product-meta mb-3">
+                                <strong>Listed:</strong>
+                                {{ listing.created_at|date:"d M Y" }}
                             </p>
 
                             <a
                                 href="{% url 'listing_detail' listing.pk %}"
-                                class="btn btn-primary"
+                                class="campus-product-button"
                             >
-                                View Details
+                                View Product
                             </a>
 
                         </div>
 
-                    </div>
+                    </article>
+
                 </div>
 
             {% empty %}
 
-                <div class="col-12 text-center py-5">
-                    <h4 class="text-white">No Products Found</h4>
-                    <p class="text-white">
-                        No available listings match your search or category.
-                    </p>
+                <div class="col-12">
 
-                    <a href="{% url 'home' %}" class="btn btn-light">
-                        View All Listings
-                    </a>
+                    <div class="campus-empty-state">
+
+                        <h3>No Products Found</h3>
+
+                        <p>
+                            No available listings match your search.
+                            Try another keyword or category.
+                        </p>
+
+                        <a
+                            href="{% url 'home' %}#meetings"
+                            class="btn marketplace-search-button px-4"
+                        >
+                            View All Listings
+                        </a>
+
+                    </div>
+
                 </div>
 
             {% endfor %}
@@ -259,6 +651,7 @@
         </div>
 
     </div>
+
 </section>
 
 {% endblock %}
