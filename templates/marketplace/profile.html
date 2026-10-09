@@ -1,19 +1,305 @@
 
+
 {% extends 'base.html' %}
 
 {% block title %}My Dashboard - Campus Marketplace{% endblock %}
 
 {% block content %}
 
+<style>
+    .dashboard-section {
+        padding: 70px 0 100px;
+    }
+
+    .dashboard-welcome {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .dashboard-welcome h3 {
+        color: #242424;
+        font-size: 27px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .dashboard-welcome p {
+        color: #666;
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+
+    .dashboard-button {
+        display: inline-block;
+        padding: 12px 20px;
+        border-radius: 9px;
+        background: #a12c35;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        text-align: center;
+        transition: background 0.2s ease;
+    }
+
+    .dashboard-button:hover {
+        background: #81222a;
+        color: #fff;
+    }
+
+    .dashboard-button-outline {
+        background: #fff;
+        color: #a12c35;
+        border: 1px solid #a12c35;
+    }
+
+    .dashboard-button-outline:hover {
+        background: #f9ecee;
+        color: #81222a;
+    }
+
+    .dashboard-profile-card,
+    .dashboard-stat-card,
+    .dashboard-listing-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.09);
+        overflow: hidden;
+    }
+
+    .dashboard-profile-card {
+        padding: 28px;
+        height: 100%;
+    }
+
+    .dashboard-profile-card h3 {
+        color: #292929;
+        font-size: 21px;
+        font-weight: 800;
+        margin-bottom: 22px;
+    }
+
+    .dashboard-profile-row {
+        border-bottom: 1px solid #eeeeee;
+        padding: 12px 0;
+    }
+
+    .dashboard-profile-row:last-child {
+        border-bottom: none;
+    }
+
+    .dashboard-profile-label {
+        display: block;
+        color: #777;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .dashboard-profile-value {
+        color: #333;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+
+    .dashboard-stat-card {
+        padding: 26px;
+        height: 100%;
+        border-top: 5px solid #a12c35;
+    }
+
+    .dashboard-stat-card.available {
+        border-top-color: #198754;
+    }
+
+    .dashboard-stat-card.sold {
+        border-top-color: #6c757d;
+    }
+
+    .dashboard-stat-label {
+        color: #666;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .dashboard-stat-number {
+        color: #242424;
+        font-size: 42px;
+        line-height: 1.1;
+        font-weight: 800;
+        margin-bottom: 0;
+    }
+
+    .dashboard-section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin: 45px 0 25px;
+    }
+
+    .dashboard-section-heading h3 {
+        color: #fff;
+        font-size: 27px;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .dashboard-listing-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .dashboard-listing-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.14);
+    }
+
+    .dashboard-image-wrap {
+        position: relative;
+        background: #f3f3f3;
+    }
+
+    .dashboard-listing-image {
+        width: 100%;
+        height: 225px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .dashboard-price {
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        background: #a12c35;
+        color: #fff;
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 17px;
+    }
+
+    .dashboard-listing-content {
+        padding: 23px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .dashboard-listing-title {
+        color: #292929;
+        font-size: 19px;
+        font-weight: 800;
+        margin-bottom: 14px;
+        overflow-wrap: anywhere;
+    }
+
+    .dashboard-listing-date {
+        color: #777;
+        font-size: 13px;
+        margin: 15px 0 20px;
+    }
+
+    .dashboard-listing-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: auto;
+    }
+
+    .dashboard-listing-actions a {
+        flex: 1;
+        text-align: center;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .dashboard-edit-button {
+        background: #fff3cd;
+        color: #664d03;
+    }
+
+    .dashboard-edit-button:hover {
+        background: #ffe69c;
+        color: #664d03;
+    }
+
+    .dashboard-view-button {
+        background: #a12c35;
+        color: #fff;
+    }
+
+    .dashboard-view-button:hover {
+        background: #81222a;
+        color: #fff;
+    }
+
+    .dashboard-empty {
+        background: #fff;
+        padding: 55px 25px;
+        border-radius: 16px;
+        text-align: center;
+    }
+
+    .dashboard-empty h4 {
+        color: #292929;
+        font-weight: 800;
+    }
+
+    .dashboard-empty p {
+        color: #666;
+        margin: 15px auto 25px;
+        max-width: 500px;
+    }
+
+    @media (max-width: 767px) {
+        .dashboard-section {
+            padding: 45px 0 70px;
+        }
+
+        .dashboard-welcome {
+            padding: 23px;
+        }
+
+        .dashboard-welcome h3 {
+            font-size: 23px;
+        }
+
+        .dashboard-section-heading h3 {
+            font-size: 23px;
+        }
+
+        .dashboard-stat-number {
+            font-size: 36px;
+        }
+
+        .dashboard-button {
+            width: 100%;
+        }
+    }
+</style>
+
 <!-- Dashboard Header -->
 <section class="heading-page header-text" id="top">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h6>Manage your campus marketplace activity</h6>
-                <h2>My Student Dashboard</h2>
+                <h6>Your Campus Marketplace Account</h6>
+                <h2>Student Dashboard</h2>
                 <p class="text-white">
-                    Welcome, <strong>{{ user.username }}</strong>
+                    Manage your listings and marketplace activity.
                 </p>
             </div>
         </div>
@@ -21,131 +307,169 @@
 </section>
 
 <!-- Dashboard Content -->
-<section class="meetings-page" id="meetings">
+<section class="meetings-page dashboard-section" id="meetings">
     <div class="container">
 
-        <!-- Profile Information -->
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-body">
-                <h4 class="fw-bold mb-3">My Profile</h4>
-
-                <p class="mb-2">
-                    <strong>Username:</strong>
-                    {{ user.username }}
+        <!-- Welcome Panel -->
+        <div class="dashboard-welcome">
+            <div>
+                <h3>Welcome back, {{ user.username }}!</h3>
+                <p>
+                    Here's an overview of your marketplace activity.
+                    Manage your products and connect with other students.
                 </p>
+            </div>
 
-                <p class="mb-2">
-                    <strong>Email:</strong>
-                    {{ user.email }}
-                </p>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{% url 'create_listing' %}" class="dashboard-button">
+                    + Sell an Item
+                </a>
 
-                {% if user.profile.campus_location %}
-                    <p class="mb-2">
-                        <strong>Campus Location:</strong>
-                        {{ user.profile.campus_location }}
-                    </p>
-                {% endif %}
-
-                {% if user.profile.phone_number %}
-                    <p class="mb-0">
-                        <strong>Phone Number:</strong>
-                        {{ user.profile.phone_number }}
-                    </p>
-                {% endif %}
+                <a href="{% url 'home' %}#meetings"
+                   class="dashboard-button dashboard-button-outline">
+                    Browse Products
+                </a>
             </div>
         </div>
 
-        <!-- Dashboard Statistics -->
-        <div class="row g-4 mb-5">
+        <!-- Statistics -->
+        <div class="row g-4 mb-4">
 
             <div class="col-md-4">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body text-center py-4">
-                        <h6 class="text-muted">Total Listings</h6>
-                        <h2 class="fw-bold text-primary">
-                            {{ total_listings }}
-                        </h2>
-                    </div>
+                <div class="dashboard-stat-card">
+                    <p class="dashboard-stat-label">Total Listings</p>
+                    <h3 class="dashboard-stat-number">
+                        {{ total_listings }}
+                    </h3>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body text-center py-4">
-                        <h6 class="text-muted">Available Listings</h6>
-                        <h2 class="fw-bold text-success">
-                            {{ available_listings }}
-                        </h2>
-                    </div>
+                <div class="dashboard-stat-card available">
+                    <p class="dashboard-stat-label">Available Listings</p>
+                    <h3 class="dashboard-stat-number">
+                        {{ available_listings }}
+                    </h3>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body text-center py-4">
-                        <h6 class="text-muted">Sold Listings</h6>
-                        <h2 class="fw-bold text-secondary">
-                            {{ sold_listings }}
-                        </h2>
-                    </div>
+                <div class="dashboard-stat-card sold">
+                    <p class="dashboard-stat-label">Sold Listings</p>
+                    <h3 class="dashboard-stat-number">
+                        {{ sold_listings }}
+                    </h3>
                 </div>
             </div>
 
         </div>
 
-        <!-- Listings Header -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-            <h4 class="fw-bold mb-0 text-white">
-                My Listings
-            </h4>
+        <!-- Profile -->
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <div class="dashboard-profile-card">
+                    <h3>My Profile</h3>
 
-            <a
-                href="{% url 'create_listing' %}"
-                class="btn btn-primary"
-            >
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="dashboard-profile-row">
+                                <span class="dashboard-profile-label">
+                                    Username
+                                </span>
+                                <span class="dashboard-profile-value">
+                                    {{ user.username }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="dashboard-profile-row">
+                                <span class="dashboard-profile-label">
+                                    Email Address
+                                </span>
+                                <span class="dashboard-profile-value">
+                                    {{ user.email|default:"Not provided" }}
+                                </span>
+                            </div>
+                        </div>
+
+                        {% if user.profile.campus_location %}
+                            <div class="col-md-6">
+                                <div class="dashboard-profile-row">
+                                    <span class="dashboard-profile-label">
+                                        Campus Location
+                                    </span>
+                                    <span class="dashboard-profile-value">
+                                        {{ user.profile.campus_location }}
+                                    </span>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if user.profile.phone_number %}
+                            <div class="col-md-6">
+                                <div class="dashboard-profile-row">
+                                    <span class="dashboard-profile-label">
+                                        Phone Number
+                                    </span>
+                                    <span class="dashboard-profile-value">
+                                        {{ user.profile.phone_number }}
+                                    </span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Listings Heading -->
+        <div class="dashboard-section-heading">
+            <h3>My Listings</h3>
+
+            <a href="{% url 'create_listing' %}" class="dashboard-button">
                 + Add New Listing
             </a>
         </div>
 
-        <!-- Listing Cards -->
+        <!-- Product Cards -->
         <div class="row g-4">
 
             {% for listing in listings %}
 
                 <div class="col-lg-4 col-md-6">
-                    <div class="card h-100 shadow-sm border-0">
 
-                        {% if listing.image %}
-                            <img
-                                src="{{ listing.image.url }}"
-                                class="card-img-top"
-                                alt="{{ listing.title }}"
-                                style="height: 220px; object-fit: cover;"
-                            >
-                        {% else %}
-                            <div
-                                class="bg-secondary text-white d-flex align-items-center justify-content-center"
-                                style="height: 220px;"
-                            >
-                                No Image Available
-                            </div>
-                        {% endif %}
+                    <div class="dashboard-listing-card">
 
-                        <div class="card-body d-flex flex-column">
+                        <div class="dashboard-image-wrap">
 
-                            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                            {% if listing.image %}
+                                <img
+                                    src="{{ listing.image.url }}"
+                                    alt="{{ listing.title }}"
+                                    class="dashboard-listing-image"
+                                    loading="lazy"
+                                >
+                            {% else %}
+                                <div class="dashboard-listing-image d-flex align-items-center justify-content-center text-muted">
+                                    No Image Available
+                                </div>
+                            {% endif %}
 
-                                <h5 class="card-title fw-bold mb-0">
-                                    {{ listing.title }}
-                                </h5>
+                            <span class="dashboard-price">
+                                €{{ listing.price }}
+                            </span>
 
-                                <span class="badge {% if listing.status == 'available' %}bg-success{% else %}bg-secondary{% endif %}">
-                                    {{ listing.get_status_display }}
-                                </span>
+                        </div>
 
-                            </div>
+                        <div class="dashboard-listing-content">
 
-                            <p class="mb-2">
+                            <h4 class="dashboard-listing-title">
+                                {{ listing.title }}
+                            </h4>
+
+                            <div class="d-flex flex-wrap gap-2">
+
                                 {% if listing.category %}
                                     <span class="badge bg-primary">
                                         {{ listing.category.name }}
@@ -155,57 +479,61 @@
                                         Uncategorised
                                     </span>
                                 {% endif %}
+
+                                <span class="badge {% if listing.status == 'available' %}bg-success{% else %}bg-secondary{% endif %}">
+                                    {{ listing.get_status_display }}
+                                </span>
+
+                            </div>
+
+                            <p class="dashboard-listing-date">
+                                Listed on {{ listing.created_at|date:"d M Y" }}
                             </p>
 
-                            <p class="fw-bold mb-2">
-                                $ {{ listing.price }}
-                            </p>
-
-                            <p class="text-muted small mb-3">
-                                Posted on {{ listing.created_at|date:"d M Y" }}
-                            </p>
-
-                            <div class="mt-auto d-flex gap-2">
+                            <div class="dashboard-listing-actions">
 
                                 <a
                                     href="{% url 'update_listing' listing.pk %}"
-                                    class="btn btn-sm btn-outline-warning flex-grow-1"
+                                    class="dashboard-edit-button"
                                 >
-                                    Edit
+                                    Edit Listing
                                 </a>
 
                                 <a
                                     href="{% url 'listing_detail' listing.pk %}"
-                                    class="btn btn-sm btn-outline-primary flex-grow-1"
+                                    class="dashboard-view-button"
                                 >
-                                    View Details
+                                    View Product
                                 </a>
 
                             </div>
 
                         </div>
+
                     </div>
+
                 </div>
 
             {% empty %}
 
                 <div class="col-12">
-                    <div class="card shadow-sm border-0">
-                        <div class="card-body text-center py-5">
-                            <h5>You haven't posted any listings yet.</h5>
+                    <div class="dashboard-empty">
 
-                            <p class="text-muted">
-                                Start selling your unused textbooks,
-                                electronics, clothing, or furniture.
-                            </p>
+                        <h4>No Listings Yet</h4>
 
-                            <a
-                                href="{% url 'create_listing' %}"
-                                class="btn btn-primary"
-                            >
-                                Create Your First Listing
-                            </a>
-                        </div>
+                        <p>
+                            You haven't posted any products yet.
+                            Start selling your unused textbooks,
+                            electronics, clothes, or furniture to other students.
+                        </p>
+
+                        <a
+                            href="{% url 'create_listing' %}"
+                            class="dashboard-button"
+                        >
+                            Create Your First Listing
+                        </a>
+
                     </div>
                 </div>
 
@@ -217,3 +545,4 @@
 </section>
 
 {% endblock %}
+
