@@ -1,39 +1,305 @@
+
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Register - Campus Marketplace{% endblock %}
+
+{% block title %}Student Registration - Campus Marketplace{% endblock %}
 
 {% block content %}
 
+<style>
+    .student-register-section {
+        min-height: 85vh;
+        padding: 110px 0 90px;
+        display: flex;
+        align-items: center;
+    }
 
-   
- <section class="contact-us" id="contact">
+    .student-register-card {
+        background: #ffffff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+    }
+
+    .student-register-header {
+        background: #a12c35;
+        padding: 35px;
+        text-align: center;
+    }
+
+    .student-register-header h1 {
+        color: #ffffff;
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .student-register-header p {
+        color: #f8e9eb;
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .student-register-body {
+        padding: 38px;
+    }
+
+    .student-register-tip {
+        background: #f8f9fa;
+        border-left: 4px solid #a12c35;
+        border-radius: 8px;
+        padding: 17px 20px;
+        margin-bottom: 28px;
+    }
+
+    .student-register-tip h3 {
+        color: #292929;
+        font-size: 17px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .student-register-tip p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .student-register-field {
+        margin-bottom: 23px;
+    }
+
+    .student-register-field label {
+        display: block;
+        color: #333;
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 9px;
+    }
+
+    .student-register-field input:not([type="checkbox"]),
+    .student-register-field select,
+    .student-register-field textarea {
+        display: block;
+        width: 100%;
+        padding: 13px 15px;
+        border: 1px solid #d7dce1;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #333;
+        font-size: 15px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .student-register-field input:focus,
+    .student-register-field select:focus,
+    .student-register-field textarea:focus {
+        outline: none;
+        border-color: #a12c35;
+        box-shadow: 0 0 0 3px rgba(161, 44, 53, 0.12);
+    }
+
+    .student-register-field input[type="checkbox"] {
+        margin-right: 8px;
+    }
+
+    .student-register-help {
+        color: #777;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-top: 8px;
+    }
+
+    .student-register-help ul {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+
+    .student-register-error {
+        background: #fff0f1;
+        color: #b02a37;
+        border-radius: 9px;
+        padding: 12px 15px;
+        margin-top: 9px;
+        font-size: 14px;
+    }
+
+    .student-register-error ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .student-register-button {
+        display: block;
+        width: 100%;
+        background: #a12c35;
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        padding: 15px 20px;
+        font-size: 16px;
+        font-weight: 800;
+        cursor: pointer;
+        margin-top: 12px;
+        transition: background 0.2s;
+    }
+
+    .student-register-button:hover {
+        background: #81222a;
+    }
+
+    .student-register-footer {
+        margin-top: 26px;
+        padding-top: 22px;
+        border-top: 1px solid #e9ecef;
+        text-align: center;
+    }
+
+    .student-register-footer p {
+        color: #666;
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+
+    .student-register-footer a {
+        color: #a12c35;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .student-register-footer a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 767px) {
+        .student-register-section {
+            min-height: auto;
+            padding: 80px 0 60px;
+        }
+
+        .student-register-header {
+            padding: 28px 22px;
+        }
+
+        .student-register-header h1 {
+            font-size: 25px;
+        }
+
+        .student-register-body {
+            padding: 26px 22px;
+        }
+    }
+</style>
+
+<!-- Registration Section -->
+<section class="contact-us student-register-section" id="contact">
     <div class="container">
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow-sm border-0 mt-4">
-            <div class="card-body p-4">
-                <h3 class="card-title text-center mb-4 font-weight-bold">Create an Account</h3>
-                <form method="POST">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="mb-3">
-                            <label class="form-label w-100">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="text-danger small">{{ field.errors }}</div>
-                            {% endif %}
+
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+
+                <div class="student-register-card">
+
+                    <!-- Header -->
+                    <div class="student-register-header">
+                        <h1>Join Campus Marketplace</h1>
+
+                        <p>
+                            Create your student account to buy,
+                            sell, and connect with fellow students.
+                        </p>
+                    </div>
+
+                    <!-- Form -->
+                    <div class="student-register-body">
+
+                        <div class="student-register-tip">
+                            <h3>Welcome to Our Campus Community!</h3>
+
+                            <p>
+                                Register to discover affordable products,
+                                list items for sale, and communicate
+                                directly with other students.
+                            </p>
                         </div>
-                    {% endfor %}
-                    <button type="submit" class="btn btn-primary w-100 mt-3 fw-bold">Register</button>
-                </form>
-                <div class="text-center mt-3">
-                    <small class="text-muted">Already have an account? <a href="{% url 'login' %}">Login here</a></small>
+
+                        <form method="POST">
+
+                            {% csrf_token %}
+
+                            <!-- General Form Errors -->
+                            {% if form.non_field_errors %}
+                                <div class="student-register-error mb-4"
+                                     role="alert">
+                                    {{ form.non_field_errors }}
+                                </div>
+                            {% endif %}
+
+                            <!-- Registration Fields -->
+                            {% for field in form %}
+
+                                <div class="student-register-field">
+
+                                    <label for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+
+                                        {% if field.field.required %}
+                                            <span class="text-danger">*</span>
+                                        {% endif %}
+                                    </label>
+
+                                    {{ field }}
+
+                                    <!-- Field Guidance -->
+                                    {% if field.help_text %}
+                                        <div class="student-register-help">
+                                            {{ field.help_text }}
+                                        </div>
+                                    {% endif %}
+
+                                    <!-- Validation Errors -->
+                                    {% if field.errors %}
+                                        <div class="student-register-error"
+                                             role="alert">
+                                            {{ field.errors }}
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+
+                            {% endfor %}
+
+                            <!-- Submit Button -->
+                            <button
+                                type="submit"
+                                class="student-register-button"
+                            >
+                                Create My Account
+                            </button>
+
+                        </form>
+
+                        <!-- Login Link -->
+                        <div class="student-register-footer">
+                            <p>
+                                Already have an account?
+
+                                <a href="{% url 'login' %}">
+                                    Log In Here
+                                </a>
+                            </p>
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
         </div>
-    </div>
-</div>
 
-</div>
+    </div>
 </section>
+
 {% endblock %}
