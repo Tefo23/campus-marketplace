@@ -26,3 +26,11 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Generated Django static files
+staticfiles/
+
+# Local backup files
+*_backup.py
+*_backup.html
+*.bak
