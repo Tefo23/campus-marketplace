@@ -1,49 +1,329 @@
+
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}{{ title }} - Campus Marketplace{% endblock %}
 
 {% block content %}
 
+<style>
+    .listing-form-section {
+        padding: 70px 0 100px;
+    }
+
+    .listing-form-card {
+        background: #ffffff;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.13);
+    }
+
+    .listing-form-header {
+        background: #a12c35;
+        padding: 30px 35px;
+        color: white;
+    }
+
+    .listing-form-header h3 {
+        color: white;
+        font-size: 27px;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .listing-form-header p {
+        color: #f8e9eb;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .listing-form-body {
+        padding: 35px;
+    }
+
+    .listing-form-field {
+        margin-bottom: 25px;
+    }
+
+    .listing-form-field label {
+        display: block;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 9px;
+        font-size: 15px;
+    }
+
+    .listing-form-field input:not([type="checkbox"]),
+    .listing-form-field select,
+    .listing-form-field textarea {
+        display: block;
+        width: 100%;
+        border: 1px solid #d7dce1;
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-size: 15px;
+        color: #333;
+        background: #fff;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .listing-form-field input:focus,
+    .listing-form-field select:focus,
+    .listing-form-field textarea:focus {
+        outline: none;
+        border-color: #a12c35;
+        box-shadow: 0 0 0 3px rgba(161, 44, 53, 0.12);
+    }
+
+    .listing-form-field textarea {
+        min-height: 140px;
+        resize: vertical;
+    }
+
+    .listing-form-field input[type="file"] {
+        background: #f8f9fa;
+        cursor: pointer;
+    }
+
+    .listing-form-field input[type="checkbox"] {
+        width: auto;
+        margin-right: 8px;
+    }
+
+    .listing-form-help {
+        color: #777;
+        font-size: 13px;
+        margin-top: 7px;
+        line-height: 1.6;
+    }
+
+    .listing-form-error {
+        color: #b02a37;
+        background: #fff0f1;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 13px;
+        margin-top: 8px;
+    }
+
+    .listing-form-error ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+    .listing-form-tip {
+        background: #f8f9fa;
+        border-left: 4px solid #a12c35;
+        border-radius: 8px;
+        padding: 18px 20px;
+        margin-bottom: 30px;
+    }
+
+    .listing-form-tip h4 {
+        font-size: 17px;
+        font-weight: 800;
+        color: #292929;
+        margin-bottom: 8px;
+    }
+
+    .listing-form-tip p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .listing-form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .listing-save-button,
+    .listing-cancel-button {
+        display: inline-block;
+        border-radius: 9px;
+        padding: 14px 25px;
+        font-weight: 700;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .listing-save-button {
+        flex: 1;
+        border: none;
+        background: #a12c35;
+        color: white;
+    }
+
+    .listing-save-button:hover {
+        background: #81222a;
+        color: white;
+    }
+
+    .listing-cancel-button {
+        background: #f1f2f4;
+        color: #444;
+    }
+
+    .listing-cancel-button:hover {
+        background: #e3e5e8;
+        color: #333;
+    }
+
+    @media (max-width: 767px) {
+        .listing-form-section {
+            padding: 45px 0 70px;
+        }
+
+        .listing-form-header,
+        .listing-form-body {
+            padding: 24px;
+        }
+
+        .listing-form-header h3 {
+            font-size: 23px;
+        }
+
+        .listing-save-button,
+        .listing-cancel-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<!-- Page Heading -->
 <section class="heading-page header-text" id="top">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h6>Get all details</h6>
-        </div>
-      </div>
-    </div>
-  </section>
-   
-<section class="meetings-page" id="meetings">
-    <div class="container">
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow-sm border-0 mt-4">
-            <div class="card-body p-4">
-                <h3 class="card-title text-center mb-4 font-weight-bold">{{ title }}</h3>
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="mb-3">
-                            <label class="form-label w-100">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="text-danger small">{{ field.errors }}</div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                    <div class="d-flex gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary flex-grow-1 fw-bold">Save Listing</button>
-                        <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4">Cancel</a>
-                    </div>
-                </form>
+        <div class="row">
+            <div class="col-lg-12">
+                <h6>Campus Marketplace</h6>
+                <h2>{{ title }}</h2>
+                <p class="text-white">
+                    Share useful products with students in your community.
+                </p>
             </div>
         </div>
     </div>
-</div>
+</section>
 
+<!-- Listing Form -->
+<section class="meetings-page listing-form-section" id="meetings">
+    <div class="container">
 
-</div>
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-md-11">
+
+                <div class="listing-form-card">
+
+                    <div class="listing-form-header">
+                        <h3>{{ title }}</h3>
+                        <p>
+                            Add accurate product details to help other
+                            students find what they need.
+                        </p>
+                    </div>
+
+                    <div class="listing-form-body">
+
+                        <div class="listing-form-tip">
+                            <h4>Tips for a Great Listing</h4>
+                            <p>
+                                Use a clear product title, describe the item's
+                                condition honestly, upload a good photo,
+                                and set a fair price in euros (€).
+                            </p>
+                        </div>
+
+                        <form method="POST" enctype="multipart/form-data">
+
+                            {% csrf_token %}
+
+                            {% if form.non_field_errors %}
+                                <div class="listing-form-error mb-4" role="alert">
+                                    {{ form.non_field_errors }}
+                                </div>
+                            {% endif %}
+
+                            {% for field in form %}
+
+                                <div class="listing-form-field">
+
+                                    <label for="{{ field.id_for_label }}">
+
+                                        {% if field.name == 'price' %}
+                                            Price (€)
+                                        {% else %}
+                                            {{ field.label }}
+                                        {% endif %}
+
+                                        {% if field.field.required %}
+                                            <span class="text-danger">*</span>
+                                        {% endif %}
+
+                                    </label>
+
+                                    {{ field }}
+
+                                    {% if field.name == 'price' %}
+                                        <div class="listing-form-help">
+                                            Enter the price in euros, for example:
+                                            15.00 or 49.99. Do not type the € symbol.
+                                        </div>
+                                    {% elif field.name == 'image' %}
+                                        <div class="listing-form-help">
+                                            Upload a clear image of your product.
+                                            A good photo helps buyers make a decision.
+                                        </div>
+                                    {% endif %}
+
+                                    {% if field.help_text %}
+                                        <div class="listing-form-help">
+                                            {{ field.help_text }}
+                                        </div>
+                                    {% endif %}
+
+                                    {% if field.errors %}
+                                        <div class="listing-form-error" role="alert">
+                                            {{ field.errors }}
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+
+                            {% endfor %}
+
+                            <div class="listing-form-actions">
+
+                                <button
+                                    type="submit"
+                                    class="listing-save-button"
+                                >
+                                    Save Listing
+                                </button>
+
+                                <a
+                                    href="{% url 'profile' %}"
+                                    class="listing-cancel-button"
+                                >
+                                    Cancel
+                                </a>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </section>
 
 {% endblock %}
