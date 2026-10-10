@@ -1,198 +1,519 @@
 
+
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Messages - Campus Marketplace{% endblock %}
+{% block title %}My Messages - Campus Marketplace{% endblock %}
 
 {% block content %}
+
+<style>
+    .inbox-section {
+        padding: 70px 0 100px;
+    }
+
+    .inbox-intro {
+        background: #fff;
+        border-radius: 16px;
+        padding: 28px 32px;
+        margin-bottom: 28px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.09);
+    }
+
+    .inbox-intro h3 {
+        color: #292929;
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .inbox-intro p {
+        color: #666;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .inbox-tabs {
+        display: flex;
+        gap: 12px;
+        border-bottom: none;
+        margin-bottom: 28px;
+    }
+
+    .inbox-tabs .nav-link {
+        background: #fff;
+        color: #444;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        padding: 13px 26px;
+        font-weight: 700;
+        transition: all 0.2s ease;
+    }
+
+    .inbox-tabs .nav-link:hover {
+        background: #f8e9eb;
+        color: #a12c35;
+    }
+
+    .inbox-tabs .nav-link.active {
+        background: #a12c35;
+        color: #fff;
+        border-color: #a12c35;
+    }
+
+    .inbox-message-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 28px;
+        margin-bottom: 22px;
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.09);
+        border-left: 5px solid #a12c35;
+    }
+
+    .inbox-message-card.sent {
+        border-left-color: #6c757d;
+    }
+
+    .inbox-message-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .inbox-person-label {
+        color: #777;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .inbox-person-name {
+        color: #292929;
+        font-size: 19px;
+        font-weight: 800;
+        overflow-wrap: anywhere;
+    }
+
+    .inbox-date {
+        color: #777;
+        font-size: 13px;
+    }
+
+    .inbox-product-info {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 18px;
+        color: #555;
+    }
+
+    .inbox-product-info strong {
+        color: #333;
+    }
+
+    .inbox-product-info a {
+        color: #a12c35;
+        font-weight: 700;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+    }
+
+    .inbox-product-info a:hover {
+        text-decoration: underline;
+    }
+
+    .inbox-message-body {
+        background: #f8f9fa;
+        border: 1px solid #edf0f2;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 22px;
+    }
+
+    .inbox-message-body p {
+        color: #444;
+        line-height: 1.8;
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .inbox-reply-area {
+        border-top: 1px solid #e9ecef;
+        padding-top: 22px;
+    }
+
+    .inbox-reply-title {
+        color: #292929;
+        font-size: 17px;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+
+    .inbox-reply-area textarea {
+        width: 100%;
+        border: 1px solid #d7dce1;
+        border-radius: 10px;
+        padding: 14px;
+        min-height: 110px;
+        resize: vertical;
+    }
+
+    .inbox-reply-area textarea:focus {
+        outline: none;
+        border-color: #a12c35;
+        box-shadow: 0 0 0 3px rgba(161, 44, 53, 0.12);
+    }
+
+    .inbox-reply-button {
+        background: #a12c35;
+        color: #fff;
+        border: none;
+        border-radius: 9px;
+        padding: 12px 24px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .inbox-reply-button:hover {
+        background: #81222a;
+    }
+
+    .inbox-empty {
+        background: #fff;
+        border-radius: 16px;
+        padding: 55px 25px;
+        text-align: center;
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.09);
+    }
+
+    .inbox-empty h4 {
+        color: #292929;
+        font-size: 22px;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .inbox-empty p {
+        color: #666;
+        line-height: 1.7;
+        max-width: 480px;
+        margin: 0 auto 22px;
+    }
+
+    .inbox-browse-button {
+        display: inline-block;
+        background: #a12c35;
+        color: #fff;
+        padding: 12px 22px;
+        border-radius: 9px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .inbox-browse-button:hover {
+        background: #81222a;
+        color: #fff;
+    }
+
+    @media (max-width: 767px) {
+        .inbox-section {
+            padding: 45px 0 70px;
+        }
+
+        .inbox-intro,
+        .inbox-message-card {
+            padding: 22px;
+        }
+
+        .inbox-tabs {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+
+        .inbox-tabs .nav-item {
+            flex: 1;
+        }
+
+        .inbox-tabs .nav-link {
+            width: 100%;
+            padding: 12px 14px;
+        }
+
+        .inbox-reply-button {
+            width: 100%;
+        }
+    }
+</style>
 
 <!-- Page Heading -->
 <section class="heading-page header-text" id="top">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h6>Connect with fellow students</h6>
+                <h6>Connect with Fellow Students</h6>
                 <h2>My Messages</h2>
+                <p class="text-white">
+                    Manage conversations about products on campus.
+                </p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Inbox Section -->
-<section class="meetings-page" id="meetings">
+<section class="meetings-page inbox-section" id="meetings">
     <div class="container">
 
-        <!-- Message Tabs -->
-        <ul class="nav nav-tabs mb-4" id="messageTabs" role="tablist">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
 
-            <li class="nav-item" role="presentation">
-                <button
-                    class="nav-link active fw-semibold"
-                    id="inbox-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#inbox"
-                    type="button"
-                    role="tab"
-                >
-                    Received
-                </button>
-            </li>
+                <!-- Introduction -->
+                <div class="inbox-intro">
+                    <h3>Your Marketplace Inbox</h3>
+                    <p>
+                        View messages from other students, respond to
+                        enquiries, and keep track of the messages you've sent.
+                    </p>
+                </div>
 
-            <li class="nav-item" role="presentation">
-                <button
-                    class="nav-link fw-semibold"
-                    id="sent-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#sent"
-                    type="button"
-                    role="tab"
-                >
-                    Sent
-                </button>
-            </li>
+                <!-- Message Tabs -->
+                <ul class="nav nav-tabs inbox-tabs"
+                    id="messageTabs"
+                    role="tablist">
 
-        </ul>
+                    <li class="nav-item" role="presentation">
+                        <button
+                            class="nav-link active"
+                            id="inbox-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#inbox"
+                            type="button"
+                            role="tab"
+                            aria-controls="inbox"
+                            aria-selected="true"
+                        >
+                            Received
+                        </button>
+                    </li>
 
-        <!-- Tab Content -->
-        <div class="tab-content" id="messageTabsContent">
+                    <li class="nav-item" role="presentation">
+                        <button
+                            class="nav-link"
+                            id="sent-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#sent"
+                            type="button"
+                            role="tab"
+                            aria-controls="sent"
+                            aria-selected="false"
+                        >
+                            Sent
+                        </button>
+                    </li>
 
-            <!-- Received Messages -->
-            <div class="tab-pane fade show active" id="inbox" role="tabpanel">
+                </ul>
 
-                {% for msg in received_messages %}
+                <!-- Tab Content -->
+                <div class="tab-content" id="messageTabsContent">
 
-                    <div class="card shadow-sm border-0 mb-3">
-                        <div class="card-body">
+                    <!-- Received Messages -->
+                    <div
+                        class="tab-pane fade show active"
+                        id="inbox"
+                        role="tabpanel"
+                        aria-labelledby="inbox-tab"
+                    >
 
-                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                        {% for msg in received_messages %}
 
-                                <strong class="text-primary">
-                                    From: {{ msg.sender.username }}
-                                </strong>
+                            <article class="inbox-message-card">
 
-                                <small class="text-muted">
-                                    {{ msg.created_at|date:"d M Y, H:i" }}
-                                </small>
+                                <div class="inbox-message-header">
 
-                            </div>
+                                    <div>
+                                        <div class="inbox-person-label">
+                                            Message From
+                                        </div>
 
-                            <p class="mb-2">
-                                <strong>Regarding:</strong>
+                                        <div class="inbox-person-name">
+                                            {{ msg.sender.username }}
+                                        </div>
+                                    </div>
 
-                                <a href="{% url 'listing_detail' msg.listing.pk %}">
-                                    {{ msg.listing.title }}
-                                </a>
-                            </p>
+                                    <time class="inbox-date"
+                                          datetime="{{ msg.created_at|date:'c' }}">
+                                        {{ msg.created_at|date:"d M Y, H:i" }}
+                                    </time>
 
-                            <div class="bg-light p-3 rounded mb-3">
-                                <p class="text-dark mb-0">
-                                    {{ msg.body|linebreaksbr }}
-                                </p>
-                            </div>
-
-                            <!-- Reply Form -->
-                            <form
-                                method="POST"
-                                action="{% url 'reply_message' msg.pk %}"
-                            >
-                                {% csrf_token %}
-
-                                <div class="mb-2">
-                                    <label class="form-label fw-semibold">
-                                        Reply to {{ msg.sender.username }}
-                                    </label>
-
-                                    <textarea
-                                        name="body"
-                                        class="form-control"
-                                        rows="3"
-                                        placeholder="Write your reply here..."
-                                        required
-                                    ></textarea>
                                 </div>
 
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary btn-sm"
-                                >
-                                    Send Reply
-                                </button>
+                                <!-- Related Product -->
+                                <div class="inbox-product-info">
+                                    <strong>Regarding:</strong>
 
-                            </form>
+                                    <a href="{% url 'listing_detail' msg.listing.pk %}">
+                                        {{ msg.listing.title }}
+                                    </a>
+                                </div>
 
-                        </div>
-                    </div>
+                                <!-- Message Body -->
+                                <div class="inbox-message-body">
+                                    <p>{{ msg.body|linebreaksbr }}</p>
+                                </div>
 
-                {% empty %}
+                                <!-- Reply Form -->
+                                <div class="inbox-reply-area">
 
-                    <div class="card shadow-sm border-0">
-                        <div class="card-body text-center py-5">
-                            <h5>No Messages Received</h5>
-                            <p class="text-muted">
-                                Messages from interested buyers will appear here.
-                            </p>
-                        </div>
-                    </div>
+                                    <h3 class="inbox-reply-title">
+                                        Reply to {{ msg.sender.username }}
+                                    </h3>
 
-                {% endfor %}
+                                    <form
+                                        method="POST"
+                                        action="{% url 'reply_message' msg.pk %}"
+                                    >
+                                        {% csrf_token %}
 
-            </div>
+                                        <div class="mb-3">
 
-            <!-- Sent Messages -->
-            <div class="tab-pane fade" id="sent" role="tabpanel">
+                                            <label
+                                                for="reply-{{ msg.pk }}"
+                                                class="form-label fw-semibold"
+                                            >
+                                                Your Reply
+                                            </label>
 
-                {% for msg in sent_messages %}
+                                            <textarea
+                                                id="reply-{{ msg.pk }}"
+                                                name="body"
+                                                class="form-control"
+                                                rows="3"
+                                                maxlength="2000"
+                                                placeholder="Write your reply here..."
+                                                required
+                                            ></textarea>
 
-                    <div class="card shadow-sm border-0 mb-3">
-                        <div class="card-body">
+                                        </div>
 
-                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                                        <button
+                                            type="submit"
+                                            class="inbox-reply-button"
+                                        >
+                                            Send Reply
+                                        </button>
 
-                                <strong class="text-secondary">
-                                    To: {{ msg.recipient.username }}
-                                </strong>
+                                    </form>
 
-                                <small class="text-muted">
-                                    {{ msg.created_at|date:"d M Y, H:i" }}
-                                </small>
+                                </div>
 
-                            </div>
+                            </article>
 
-                            <p class="mb-2">
-                                <strong>Regarding:</strong>
+                        {% empty %}
 
-                                <a href="{% url 'listing_detail' msg.listing.pk %}">
-                                    {{ msg.listing.title }}
-                                </a>
-                            </p>
+                            <div class="inbox-empty">
 
-                            <div class="bg-light p-3 rounded">
-                                <p class="text-dark mb-0">
-                                    {{ msg.body|linebreaksbr }}
+                                <h4>No Messages Received Yet</h4>
+
+                                <p>
+                                    When students contact you about your
+                                    products, their messages will appear here.
                                 </p>
+
+                                <a
+                                    href="{% url 'profile' %}"
+                                    class="inbox-browse-button"
+                                >
+                                    View My Dashboard
+                                </a>
+
                             </div>
 
-                        </div>
+                        {% endfor %}
+
                     </div>
 
-                {% empty %}
+                    <!-- Sent Messages -->
+                    <div
+                        class="tab-pane fade"
+                        id="sent"
+                        role="tabpanel"
+                        aria-labelledby="sent-tab"
+                    >
 
-                    <div class="card shadow-sm border-0">
-                        <div class="card-body text-center py-5">
-                            <h5>No Sent Messages</h5>
-                            <p class="text-muted">
-                                When you contact a seller, your messages will appear here.
-                            </p>
-                        </div>
+                        {% for msg in sent_messages %}
+
+                            <article class="inbox-message-card sent">
+
+                                <div class="inbox-message-header">
+
+                                    <div>
+                                        <div class="inbox-person-label">
+                                            Message To
+                                        </div>
+
+                                        <div class="inbox-person-name">
+                                            {{ msg.recipient.username }}
+                                        </div>
+                                    </div>
+
+                                    <time class="inbox-date"
+                                          datetime="{{ msg.created_at|date:'c' }}">
+                                        {{ msg.created_at|date:"d M Y, H:i" }}
+                                    </time>
+
+                                </div>
+
+                                <!-- Related Product -->
+                                <div class="inbox-product-info">
+                                    <strong>Regarding:</strong>
+
+                                    <a href="{% url 'listing_detail' msg.listing.pk %}">
+                                        {{ msg.listing.title }}
+                                    </a>
+                                </div>
+
+                                <!-- Message Body -->
+                                <div class="inbox-message-body">
+                                    <p>{{ msg.body|linebreaksbr }}</p>
+                                </div>
+
+                            </article>
+
+                        {% empty %}
+
+                            <div class="inbox-empty">
+
+                                <h4>No Sent Messages Yet</h4>
+
+                                <p>
+                                    When you contact a seller or reply to
+                                    another student, your sent messages
+                                    will appear here.
+                                </p>
+
+                                <a
+                                    href="{% url 'home' %}#meetings"
+                                    class="inbox-browse-button"
+                                >
+                                    Browse Products
+                                </a>
+
+                            </div>
+
+                        {% endfor %}
+
                     </div>
 
-                {% endfor %}
+                </div>
 
             </div>
-
         </div>
 
     </div>
 </section>
 
 {% endblock %}
+
