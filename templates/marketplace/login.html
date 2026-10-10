@@ -1,39 +1,233 @@
+
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Login - Campus Marketplace{% endblock %}
+
+{% block title %}Student Login - Campus Marketplace{% endblock %}
 
 {% block content %}
 
+<style>
+    .student-login-section {
+        min-height: 85vh;
+        padding: 110px 0 90px;
+        display: flex;
+        align-items: center;
+    }
 
- <section class="contact-us" id="contact">
-    <div class="container">  
+    .student-login-card {
+        background: #ffffff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+    }
 
-<div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card shadow-sm border-0 mt-4">
-            <div class="card-body p-4">
-                <h3 class="card-title text-center mb-4 font-weight-bold">Student Login</h3>
-                <form method="POST">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="mb-3">
-                            <label class="form-label w-100 ">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="text-danger small">{{ field.errors }}</div>
+    .student-login-header {
+        background: #a12c35;
+        padding: 35px 35px 30px;
+        text-align: center;
+    }
+
+    .student-login-header h1 {
+        color: #ffffff;
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .student-login-header p {
+        color: #f8e9eb;
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .student-login-body {
+        padding: 38px;
+    }
+
+    .student-login-field {
+        margin-bottom: 24px;
+    }
+
+    .student-login-field label {
+        display: block;
+        font-size: 15px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 9px;
+    }
+
+    .student-login-field input {
+        display: block;
+        width: 100%;
+        padding: 13px 15px;
+        border: 1px solid #d7dce1;
+        border-radius: 10px;
+        background: #fff;
+        color: #333;
+        font-size: 15px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .student-login-field input:focus {
+        outline: none;
+        border-color: #a12c35;
+        box-shadow: 0 0 0 3px rgba(161, 44, 53, 0.12);
+    }
+
+    .student-login-error {
+        background: #fff0f1;
+        color: #b02a37;
+        border-radius: 9px;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .student-login-error ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .student-login-button {
+        display: block;
+        width: 100%;
+        background: #a12c35;
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        padding: 14px 20px;
+        font-size: 16px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .student-login-button:hover {
+        background: #81222a;
+    }
+
+    .student-login-footer {
+        margin-top: 25px;
+        padding-top: 22px;
+        border-top: 1px solid #e9ecef;
+        text-align: center;
+    }
+
+    .student-login-footer p {
+        color: #666;
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+
+    .student-login-footer a {
+        color: #a12c35;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .student-login-footer a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 767px) {
+        .student-login-section {
+            min-height: auto;
+            padding: 80px 0 60px;
+        }
+
+        .student-login-header {
+            padding: 28px 22px;
+        }
+
+        .student-login-header h1 {
+            font-size: 25px;
+        }
+
+        .student-login-body {
+            padding: 26px 22px;
+        }
+    }
+</style>
+
+<!-- Student Login -->
+<section class="contact-us student-login-section" id="contact">
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-8">
+
+                <div class="student-login-card">
+
+                    <!-- Heading -->
+                    <div class="student-login-header">
+                        <h1>Welcome Back!</h1>
+                        <p>
+                            Log in to Campus Marketplace to manage
+                            your listings and connect with fellow students.
+                        </p>
+                    </div>
+
+                    <!-- Login Form -->
+                    <div class="student-login-body">
+
+                        <form method="POST">
+
+                            {% csrf_token %}
+
+                            {% if form.non_field_errors %}
+                                <div class="student-login-error" role="alert">
+                                    {{ form.non_field_errors }}
+                                </div>
                             {% endif %}
+
+                            {% for field in form %}
+
+                                <div class="student-login-field">
+
+                                    <label for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                    </label>
+
+                                    {{ field }}
+
+                                    {% if field.errors %}
+                                        <div class="student-login-error mt-2" role="alert">
+                                            {{ field.errors }}
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+
+                            {% endfor %}
+
+                            <button
+                                type="submit"
+                                class="student-login-button"
+                            >
+                                Login to My Account
+                            </button>
+
+                        </form>
+
+                        <!-- Registration Link -->
+                        <div class="student-login-footer">
+                            <p>
+                                New to Campus Marketplace?
+                                <a href="{% url 'register' %}">
+                                    Create an Account
+                                </a>
+                            </p>
                         </div>
-                    {% endfor %}
-                    <button type="submit" class="btn btn-primary w-100 mt-3 fw-bold">Login</button>
-                </form>
-                <div class="text-center mt-3">
-                    <small class="text-muted">Don't have an account? <a href="{% url 'register' %}">Register here</a></small>
+
+                    </div>
+
                 </div>
+
             </div>
         </div>
-    </div>
-</div>
 
-</div>
+    </div>
 </section>
+
 {% endblock %}
