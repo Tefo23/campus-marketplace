@@ -23,7 +23,12 @@ class Listing(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='listings')
-    image = models.ImageField(upload_to='products/', default='products/default.jpg', blank=True)
+    image = models.ImageField(
+    upload_to="listings/",
+    max_length=500,
+    blank=True,
+    null=True,
+)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='available')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
